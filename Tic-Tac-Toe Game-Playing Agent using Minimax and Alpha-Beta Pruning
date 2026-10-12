@@ -1,0 +1,186 @@
+ Tic-Tac-Toe Game-Playing Agent using Minimax and Alpha-Beta Pruning
+Step 1: Create the board
+python
+board = [' '] * 9
+print(board)
+Step 2: Display the board
+python
+def show_board(board):
+    print()
+    print(board[0], '|', board[1], '|', board[2])
+    print('--+---+--')
+    print(board[3], '|', board[4], '|', board[5])
+    print('--+---+--')
+    print(board[6], '|', board[7], '|', board[8])
+    print()
+
+show_board(board)
+Step 3: Check for a winner
+python
+WINNING_LINES = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+]
+
+
+def winner(board):
+    for a, b, c in WINNING_LINES:
+        if board[a] != ' ' and board[a] == board[b] == board[c]:
+            return board[a]
+    return None
+
+
+def empty_boxes(board):
+    return [i for i in range(9) if board[i] == ' ']
+
+
+print("Empty positions:", empty_boxes(board))
+Step 4: Minimax with Alpha-Beta Pruning
+python
+def minimax(board, is_max_turn, alpha, beta):
+    win = winner(board)
+
+    if win == 'X':
+        return 1
+    if win == 'O':
+        return -1
+    if len(empty_boxes(board)) == 0:
+        return 0
+
+    # MAX turn: AI chooses the highest score
+    if is_max_turn:
+        best_score = -2
+
+        for box in empty_boxes(board):
+            board[box] = 'X'
+            score = minimax(board, False, alpha, beta)
+            board[box] = ' '
+
+            best_score = max(best_score, score)
+            alpha = max(alpha, best_score)
+
+            if beta <= alpha:
+                break
+
+        return best_score
+
+    # MIN turn: opponent chooses the lowest score
+    else:
+        best_score = 2
+
+        for box in empty_boxes(board):
+            board[box] = 'O'
+            score = minimax(board, True, alpha, beta)
+            board[box] = ' '
+
+            best_score = min(best_score, score)
+            beta = min(beta, best_score)
+
+            if beta <= alpha:
+                break
+
+        return best_score
+Step 5: Find the AI's best move
+python
+def best_move(board):
+    best_score = -2
+    best_box = None
+
+    for box in empty_boxes(board):
+        board[box] = 'X'
+        score = minimax(board, False, -2, 2)
+        board[box] = ' '
+
+        if score > best_score:
+            best_score = score
+            best_box = box
+
+    return best_box
+Step 6: Test the AI
+python
+test_board = [
+    'X', 'O', 'X',
+    'O', 'X', ' ',
+    ' ', ' ', 'O'
+]
+
+show_board(test_board)
+
+move = best_move(test_board)
+
+print("AI chooses position:", move)
+Expected output:
+
+text
+AI chooses position: 6
+The AI chooses position 6 to complete the diagonal and win.
+
+Step 7: Play against the AI
+python
+def play_game():
+    board = [' '] * 9
+
+    print("You are O. The AI is X.")
+    print("Choose positions using numbers 0 to 8.")
+
+    while True:
+        # AI move
+        ai_move = best_move(board)
+
+        if ai_move is None:
+            print("Draw!")
+            break
+
+        board[ai_move] = 'X'
+        print("\nAI chooses:", ai_move)
+        show_board(board)
+
+        if winner(board) == 'X':
+            print("AI wins!")
+            break
+
+        if len(empty_boxes(board)) == 0:
+            print("Draw!")
+            break
+
+        # Human move
+        while True:
+            try:
+                player_move = int(input("Your move (0-8): "))
+
+                if player_move in empty_boxes(board):
+                    break
+
+                print("That position is not available.")
+
+            except ValueError:
+                print("Please enter a number from 0 to 8.")
+
+        board[player_move] = 'O'
+        show_board(board)
+
+        if winner(board) == 'O':
+            print("You win!")
+            break
+
+        if len(empty_boxes(board)) == 0:
+            print("Draw!")
+            break
+
+
+play_game()
+Step 8: Quick recap
+Minimax: Finds the best move by examining possible future game outcomes.
+
+Alpha-Beta Pruning: Skips branches that cannot improve the final decision.
+
+MAX (X): Tries to maximize the score.
+
+MIN (O): Tries to minimize the score.
+
+best_move(): Selects the AI's move.
+
+play_game(): Lets you play against the AI.
+
+Result: You have implemented a Tic-Tac-Toe AI that uses Minimax with Alpha-Beta Pruning to play optimally.
