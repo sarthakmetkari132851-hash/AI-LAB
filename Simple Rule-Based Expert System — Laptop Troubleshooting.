@@ -1,0 +1,79 @@
+ Simple Rule-Based Expert System — Laptop Troubleshooting.
+Step 1: Create the expert system
+python
+def laptop_expert(turns_on, internet_works, is_slow):
+    if turns_on == "no":
+        return "Check power cable of the laptop"
+
+    elif internet_works == "no":
+        return "Check WiFi and restart the router"
+
+    elif is_slow == "yes":
+        return "Close unused programs and restart the system"
+
+    else:
+        return "No common problem in the expert system"
+Step 2: Ask the user questions
+python
+turns_on = input("Does the laptop turn on? yes/no: ").lower()
+
+internet_works = input("Does the internet work? yes/no: ").lower()
+
+is_slow = input("Is the laptop slow? yes/no: ").lower()
+
+advice = laptop_expert(turns_on, internet_works, is_slow)
+
+print("\nExpert System Advice")
+print(advice)
+Step 3: Understand lower()
+python
+a = "PYTHON"
+print(a)
+
+b = a.lower()
+print(b)
+Output:
+
+text
+PYTHON
+python
+The lower() function converts uppercase letters to lowercase, so inputs such as YES and Yes become yes.
+
+Step 4: Complete code in one cell
+You can also run the entire practical using this single code block.
+
+python
+def laptop_expert(turns_on, internet_works, is_slow):
+    if turns_on == "no":
+        return "Check power cable of the laptop"
+
+    elif internet_works == "no":
+        return "Check WiFi and restart the router"
+
+    elif is_slow == "yes":
+        return "Close unused programs and restart the system"
+
+    else:
+        return "No common problem in the expert system"
+
+
+print("=== Laptop Troubleshooting Expert System ===")
+
+turns_on = input("Does the laptop turn on? yes/no: ").lower()
+internet_works = input("Does the internet work? yes/no: ").lower()
+is_slow = input("Is the laptop slow? yes/no: ").lower()
+
+advice = laptop_expert(turns_on, internet_works, is_slow)
+
+print("\nExpert System Advice:")
+print(advice)
+Example output
+text
+=== Laptop Troubleshooting Expert System ===
+Does the laptop turn on? yes/no: yes
+Does the internet work? yes/no: no
+Is the laptop slow? yes/no: no
+
+Expert System Advice:
+Check WiFi and restart the router
+Result: The laptop troubleshooting expert system successfully uses if, elif, and else rules to provide advice based on the user's answers.
