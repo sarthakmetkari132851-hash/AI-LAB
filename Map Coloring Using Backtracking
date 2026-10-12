@@ -1,0 +1,118 @@
+Map Coloring Using Backtracking.
+Step 1: Create the map and colors
+python
+map_data = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D'],
+    'D': ['B', 'C']
+}
+
+colors = ["red", "green", "blue"]
+Step 2: Consistency checking
+python
+def is_consistent(region, color, assignment):
+    for neighbor in map_data[region]:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+
+    return True
+Step 3: Implement backtracking
+python
+def solve_map(assignment):
+    # Check whether all regions are colored
+    if len(assignment) == len(map_data):
+        return assignment
+
+    # Find the next uncolored region
+    for region in map_data:
+        if region not in assignment:
+            break
+
+    # Try each available color
+    for color in colors:
+        if is_consistent(region, color, assignment):
+            assignment[region] = color
+
+            result = solve_map(assignment)
+
+            if result is not None:
+                return result
+
+            # Backtrack if the choice fails
+            del assignment[region]
+
+    return None
+Step 4: Solve the map
+python
+solution = solve_map({})
+
+print("Solution:")
+
+if solution is not None:
+    for region, color in solution.items():
+        print(region, "=", color)
+else:
+    print("No solution exists.")
+Expected output:
+
+text
+Solution:
+A = red
+B = green
+C = blue
+D = red
+Step 5: Complete code in one cell
+If you prefer, run the entire practical at once:
+
+python
+map_data = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D'],
+    'D': ['B', 'C']
+}
+
+colors = ["red", "green", "blue"]
+
+
+def is_consistent(region, color, assignment):
+    for neighbor in map_data[region]:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+    return True
+
+
+def solve_map(assignment):
+    if len(assignment) == len(map_data):
+        return assignment
+
+    for region in map_data:
+        if region not in assignment:
+            break
+
+    for color in colors:
+        if is_consistent(region, color, assignment):
+            assignment[region] = color
+
+            result = solve_map(assignment)
+
+            if result is not None:
+                return result
+
+            del assignment[region]
+
+    return None
+
+
+solution = solve_map({})
+
+print("Map Coloring Solution:")
+
+if solution is not None:
+    for region, color in solution.items():
+        print(region, "=", color)
+else:
+    print("No solution exists.")
+Result
+The map coloring problem is solved successfully using backtracking and consistency checking. Every pair of connected regions has different colors.
