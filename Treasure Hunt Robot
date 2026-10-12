@@ -1,0 +1,195 @@
+
+
+## Step 1: Wake up the robot
+
+python
+```
+print("Hello! I am your treasure-hunt robot. 🤖")
+print("Let's find the treasure together! 💎")
+```
+
+## Step 2: Create the map
+
+python
+```
+map_rooms = {
+    "A": ["B", "C"],
+    "B": ["D"],
+    "C": ["D"],
+    "D": ["G"],
+    "G": []
+}
+
+print("Our map:")
+print("            A  (Start)")
+print("           / \\")
+print("          B   C")
+print("           \\ /")
+print("            D")
+print("            |")
+print("            G  (Treasure 💎)")
+print()
+print("Doors from each room:", map_rooms)
+```
+
+## Step 3: Breadth-First Search (BFS)
+
+python
+```
+def bfs(start, goal):
+    to_do = [start]
+    visited = []
+    order = []
+
+    while to_do:
+        room = to_do.pop(0)
+
+        if room in visited:
+            continue
+
+        visited.append(room)
+        order.append(room)
+
+        if room == goal:
+            return order
+
+        for nxt in map_rooms[room]:
+            to_do.append(nxt)
+
+        print(to_do)
+
+    return order
+
+order = bfs("A", "G")
+print("BFS checked the rooms in this order:", order)
+print("Number of rooms BFS checked:", len(order))
+```
+
+## Step 4: Depth-First Search (DFS)
+
+python
+```
+def dfs(start, goal):
+    to_do = [start]
+    visited = []
+    order = []
+
+    while to_do:
+        room = to_do.pop()
+
+        if room in visited:
+            continue
+
+        visited.append(room)
+        order.append(room)
+
+        if room == goal:
+            return order
+
+        for nxt in map_rooms[room]:
+            to_do.append(nxt)
+
+        print(to_do)
+
+    return order
+
+order = dfs("A", "G")
+print("DFS checked the rooms in this order:", order)
+print("Number of rooms DFS checked:", len(order))
+```
+
+## Step 5: Calculate the cost of each path
+
+python
+```
+door_cost = {
+    ("A", "B"): 1,
+    ("B", "D"): 1,
+    ("A", "C"): 5,
+    ("C", "D"): 1,
+    ("D", "G"): 1
+}
+
+def path_cost(path):
+    total = 0
+
+    for i in range(len(path) - 1):
+        door = (path[i], path[i + 1])
+        total = total + door_cost[door]
+
+    return total
+
+path1 = ["A", "B", "D", "G"]
+path2 = ["A", "C", "D", "G"]
+
+print("Path 1 A -> B -> D -> G costs:", path_cost(path1))
+print("Path 2 A -> C -> D -> G costs:", path_cost(path2))
+```
+
+## Step 6: Pick the cheapest path
+
+python
+```
+cost1 = path_cost(path1)
+cost2 = path_cost(path2)
+
+if cost1 < cost2:
+    best_path = path1
+    best_cost = cost1
+else:
+    best_path = path2
+    best_cost = cost2
+
+print("Path 1 cost:", cost1)
+print("Path 2 cost:", cost2)
+print()
+print("The cheapest path is:", best_path, "with cost", best_cost, "💰")
+```
+
+## Step 7: Compare the three searches
+
+python
+```
+bfs_order = bfs("A", "G")
+dfs_order = dfs("A", "G")
+
+print("RESULTS")
+print("-" * 40)
+print("BFS (nearest first) checked:", len(bfs_order), "rooms ->", bfs_order)
+print("DFS (deep first) checked:", len(dfs_order), "rooms ->", dfs_order)
+print("Cheapest path:", best_path, "with cost", best_cost)
+print("-" * 40)
+
+print("\nWhat we learned:")
+print("* BFS checks the nearest rooms first.")
+print("* DFS dives deep down one path first.")
+print("* Cheapest path counts door costs and picks the lowest total.")
+```
+
+## Step 8: Change the door costs
+
+python
+```
+door_cost[("A", "B")] = 4
+door_cost[("A", "C")] = 1
+
+cost1 = path_cost(["A", "B", "D", "G"])
+cost2 = path_cost(["A", "C", "D", "G"])
+
+print("Now Path 1 (through B) costs:", cost1)
+print("Now Path 2 (through C) costs:", cost2)
+
+if cost1 < cost2:
+    print("Cheapest path is now Path 1: A -> B -> D -> G 🎉")
+else:
+    print("Cheapest path is now Path 2: A -> C -> D -> G 🎉")
+```
+
+Expected results:
+
+- BFS visits: `['A', 'B', 'C', 'D', 'G']`
+- DFS visits: `['A', 'C', 'D', 'G']`
+- Initially, the cheapest path is `A → B → D → G`, with cost `3`.
+- After changing the door costs, the cheapest path is `A → C → D → G`, with cost `3`.
+
+Note: Step 6 demonstrates the basic idea of choosing the cheaper path between two candidates. A full Uniform-Cost Search algorithm would systematically explore paths in order of cumulative cost.
