@@ -1,0 +1,121 @@
+Simple Probabilistic Classifier for Diagnosis using Naive Bayes.
+Step 1: Import the library
+python
+from sklearn.naive_bayes import BernoulliNB
+Step 2: Create the training dataset
+python
+X = [
+    [1, 1, 1],
+    [1, 1, 0],
+    [1, 0, 1],
+    [0, 1, 0],
+    [0, 1, 1],
+    [0, 0, 0]
+]
+
+y = [
+    'Flu',
+    'Flu',
+    'Flu',
+    'Cold',
+    'Cold',
+    'Cold'
+]
+Step 3: Train the Naive Bayes model
+python
+model = BernoulliNB()
+
+model.fit(X, y)
+
+print("Naive Bayes model trained successfully!")
+Step 4: Predict a diagnosis
+python
+patient = [[1, 1, 1]]
+
+prediction = model.predict(patient)
+
+print("Predicted diagnosis:", prediction[0])
+Expected output:
+
+text
+Predicted diagnosis: Flu
+Step 5: Calculate the probabilities
+python
+probabilities = model.predict_proba(patient)
+
+for diagnosis, probability in zip(model.classes_, probabilities[0]):
+    print(diagnosis, "=", round(probability, 2))
+Expected output:
+
+text
+Cold = 0.14
+Flu = 0.86
+These probabilities are illustrative; the actual values are calculated by the trained model.
+
+Step 6: Test another patient
+python
+patient2 = [[0, 1, 0]]
+
+prediction2 = model.predict(patient2)
+
+print("Predicted diagnosis:", prediction2[0])
+Expected output:
+
+text
+Predicted diagnosis: Cold
+Step 7: Complete code in one cell
+Run this entire program to perform the practical in one go.
+
+python
+from sklearn.naive_bayes import BernoulliNB
+
+# Training dataset: fever, cough, fatigue
+X = [
+    [1, 1, 1],
+    [1, 1, 0],
+    [1, 0, 1],
+    [0, 1, 0],
+    [0, 1, 1],
+    [0, 0, 0]
+]
+
+# Correct diagnoses
+y = [
+    'Flu',
+    'Flu',
+    'Flu',
+    'Cold',
+    'Cold',
+    'Cold'
+]
+
+# Train the model
+model = BernoulliNB()
+model.fit(X, y)
+
+print("Model trained successfully!\n")
+
+# Predict the first patient
+patient = [[1, 1, 1]]
+prediction = model.predict(patient)
+probabilities = model.predict_proba(patient)
+
+print("Patient 1: Fever=Yes, Cough=Yes, Fatigue=Yes")
+print("Predicted diagnosis:", prediction[0])
+print("Probabilities:")
+
+for diagnosis, probability in zip(model.classes_, probabilities[0]):
+    print(diagnosis, "=", round(probability, 2))
+
+print()
+
+# Predict the second patient
+patient2 = [[0, 1, 0]]
+prediction2 = model.predict(patient2)
+
+print("Patient 2: Fever=No, Cough=Yes, Fatigue=No")
+print("Predicted diagnosis:", prediction2[0])
+Note: If scikit-learn is not installed, run !pip install scikit-learn in a notebook cell first. This is an educational example, not a medically reliable diagnostic tool.
+
+Result
+The Naive Bayes classifier is trained successfully and predicts the likely class (Flu or Cold) using the input symptoms and the learned class probabilities.
